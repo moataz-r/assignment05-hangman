@@ -43,7 +43,7 @@ function switchTab(tabName) {
 }
 
 function loadWordBank() {
-    const stored = localStorage.getItem('wordBank');
+    const stored = localStorage.getItem('devopsWords'); // fixed key mismatch
     if (stored) {
         wordBank = JSON.parse(stored);
     } else {
@@ -55,6 +55,11 @@ function loadWordBank() {
 
 function saveWordBank() {
     localStorage.setItem('wordBank', JSON.stringify(wordBank));
+}
+
+function isValidWord(word) {
+    const regex = /^[A-Z0-9]+$/;
+    return regex.test(word);
 }
 
 function displayWordBank() {
@@ -93,6 +98,11 @@ function addWord() {
     const word = input.value.trim().toUpperCase();
     if (!word) return;
 
+    if (!isValidWord(word)) {
+        alert("Only letters are allowed. No special characters.");
+        return;
+    }
+
     wordBank.push(word);
     input.value = '';
     saveWordBank();
@@ -101,11 +111,18 @@ function addWord() {
 
 function editWord(index) {
     const newWord = prompt('Edit word:', wordBank[index]);
-    if (newWord) {
-        wordBank[index] = newWord.trim().toUpperCase(); // replace instead of delete
-        saveWordBank();
-        displayWordBank();
+    if (!newWord) return;
+
+    const formattedWord = newWord.trim().toUpperCase();
+
+    if (!isValidWord(formattedWord)) {
+        alert("Only letters and numbers are allowed. No special characters.");
+        return;
     }
+
+    wordBank[index] = formattedWord;
+    saveWordBank();
+    displayWordBank();
 }
 
 
