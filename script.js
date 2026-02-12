@@ -1,5 +1,4 @@
-
-
+javascript
 const defaultWords = [
     'DEVOPS', 'AGILE', 'VERSION', 'BRANCH', 'GITHUB', 
     'CHANGES', 'FEATURES', 'HOTFIX', 'CONTINUOUS', 'INTEGRATION',
@@ -43,7 +42,7 @@ function switchTab(tabName) {
 }
 
 function loadWordBank() {
-    const stored = localStorage.getItem('wordBank');
+    const stored = localStorage.getItem('devopsWords');
     if (stored) {
         wordBank = JSON.parse(stored);
     } else {
@@ -93,6 +92,11 @@ function addWord() {
     const word = input.value.trim().toUpperCase();
     if (!word) return;
 
+    if (wordBank.includes(word)) {
+        alert('Word already exists in the bank.');
+        return;
+    }
+
     wordBank.push(word);
     input.value = '';
     saveWordBank();
@@ -101,8 +105,16 @@ function addWord() {
 
 function editWord(index) {
     const newWord = prompt('Edit word:', wordBank[index]);
-    if (newWord) {
-        wordBank[index] = newWord.trim().toUpperCase();
+    if (newWord !== null) {
+        const formatted = newWord.trim().toUpperCase();
+        if (!formatted) return;
+
+        if (wordBank.includes(formatted) && formatted !== wordBank[index]) {
+            alert('Word already exists in the bank.');
+            return;
+        }
+
+        wordBank[index] = formatted;  // ✅ Properly update instead of delete
         saveWordBank();
         displayWordBank();
     }
@@ -110,7 +122,7 @@ function editWord(index) {
 
 function deleteWord(index) {
     if (confirm('Are you sure you want to delete this word?')) {
-        wordBank.splice(index, 1);
+        wordBank.splice(index, 1);  // ✅ Properly remove word
         saveWordBank();
         displayWordBank();
     }
@@ -138,7 +150,6 @@ function startGame() {
     p1Name = p1Name || 'Player 1';
     p2Name = p2Name || 'Player 2';
 
-    // Prevent same names (case-insensitive)
     if (p1Name.toLowerCase() === p2Name.toLowerCase()) {
         alert('Players must have different names!');
         return;
@@ -168,7 +179,6 @@ function nextRound() {
     const randomIndex = Math.floor(Math.random() * wordBank.length);
     gameState.currentWord = wordBank[randomIndex];
     
-    document.getElementById('gameStatus').classList.remove('show');
     document.getElementById('gameStatus').className = 'game-status';
     resetHangman();
     resetKeyboard();
@@ -299,4 +309,3 @@ function gameLost() {
     
     gameState.currentPlayer = gameState.currentPlayer === 1 ? 2 : 1;
 }
-
