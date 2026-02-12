@@ -43,7 +43,7 @@ function switchTab(tabName) {
 }
 
 function loadWordBank() {
-    const stored = localStorage.getItem('devopsWords'); // fixed key mismatch
+    const stored = localStorage.getItem('wordBank');
     if (stored) {
         wordBank = JSON.parse(stored);
     } else {
@@ -55,11 +55,6 @@ function loadWordBank() {
 
 function saveWordBank() {
     localStorage.setItem('wordBank', JSON.stringify(wordBank));
-}
-
-function isValidWord(word) {
-    const regex = /^[A-Z0-9]+$/;
-    return regex.test(word);
 }
 
 function displayWordBank() {
@@ -96,10 +91,12 @@ function displayWordBank() {
 function addWord() {
     const input = document.getElementById('newWord');
     const word = input.value.trim().toUpperCase();
-    if (!word) return;
 
-    if (!isValidWord(word)) {
-        alert("Only letters are allowed. No special characters.");
+    if (!word) return; // prevent empty input
+
+    // Check for duplicates
+    if (wordBank.includes(word)) {
+        alert('This word already exists in the word bank!');
         return;
     }
 
@@ -115,8 +112,9 @@ function editWord(index) {
 
     const formattedWord = newWord.trim().toUpperCase();
 
-    if (!isValidWord(formattedWord)) {
-        alert("Only letters and numbers are allowed. No special characters.");
+    // Prevent duplicate (excluding the word being edited)
+    if (wordBank.includes(formattedWord) && formattedWord !== wordBank[index]) {
+        alert('This word already exists in the word bank!');
         return;
     }
 
@@ -124,6 +122,7 @@ function editWord(index) {
     saveWordBank();
     displayWordBank();
 }
+
 
 
 function deleteWord(index) {
@@ -151,6 +150,7 @@ function generateKeyboard() {
 }
 
 function startGame() {
+    function startGame() {
         const p1Name = document.getElementById('player1Name').value.trim();
         const p2Name = document.getElementById('player2Name').value.trim();
         
@@ -172,8 +172,8 @@ function startGame() {
         document.getElementById('gameArea').style.display = 'block';
         
         nextRound();
+    }
 }
-
 
 function nextRound() {
     if (wordBank.length === 0) {
