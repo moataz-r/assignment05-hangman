@@ -57,7 +57,7 @@ function loadWordBank() {
 }
 
 function saveWordBank() {
-    localStorage.setItem('devopsWords', JSON.stringify(wordBank));
+    localStorage.setItem('wordBank', JSON.stringify(wordBank));
 }
 
 function displayWordBank() {
@@ -104,18 +104,21 @@ function addWord() {
 function editWord(index) {
     const newWord = prompt('Edit word:', wordBank[index]);
     if (newWord) {
-        wordBank.splice(index, 1);
+        wordBank[index] = newWord.trim().toUpperCase(); // replace instead of delete
         saveWordBank();
         displayWordBank();
     }
 }
 
+
 function deleteWord(index) {
     if (confirm('Are you sure you want to delete this word?')) {
+        wordBank.splice(index, 1); // actually remove it
         saveWordBank();
         displayWordBank();
     }
 }
+
 
 function generateKeyboard() {
     const keyboard = document.getElementById('keyboard');
