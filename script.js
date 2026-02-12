@@ -320,3 +320,30 @@ function gameLost() {
     gameState.currentPlayer = gameState.currentPlayer === 1 ? 2 : 1;
 }
 
+
+
+function giveHint() {
+    if (!gameState.gameActive) return;
+
+    const hiddenLetters = [...gameState.currentWord].filter(letter =>
+        !gameState.guessedLetters.includes(letter)
+    );
+
+    if (hiddenLetters.length === 0) return;
+
+    const randomLetter = hiddenLetters[Math.floor(Math.random() * hiddenLetters.length)];
+
+    gameState.guessedLetters.push(randomLetter);
+
+    // Deduct 5 points from current player
+    if (gameState.currentPlayer === 1) {
+        gameState.player1.score = Math.max(0, gameState.player1.score - 5);
+        document.getElementById('score1').textContent = gameState.player1.score;
+    } else {
+        gameState.player2.score = Math.max(0, gameState.player2.score - 5);
+        document.getElementById('score2').textContent = gameState.player2.score;
+    }
+
+    updateWordDisplay();
+    checkGameStatus();
+}
