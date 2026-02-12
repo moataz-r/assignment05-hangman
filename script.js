@@ -54,7 +54,7 @@ function loadWordBank() {
 }
 
 function saveWordBank() {
-    localStorage.setItem('devopsWords', JSON.stringify(wordBank));
+    localStorage.setItem('wordBank', JSON.stringify(wordBank));
 }
 
 function isValidWord(word) {
@@ -125,9 +125,10 @@ function editWord(index) {
     displayWordBank();
 }
 
+
 function deleteWord(index) {
     if (confirm('Are you sure you want to delete this word?')) {
-        wordBank.splice(index, 1);
+        wordBank.splice(index, 1); // actually remove it
         saveWordBank();
         displayWordBank();
     }
