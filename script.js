@@ -151,7 +151,6 @@ function generateKeyboard() {
 }
 
 function startGame() {
-    function startGame() {
         const p1Name = document.getElementById('player1Name').value.trim();
         const p2Name = document.getElementById('player2Name').value.trim();
         
@@ -173,8 +172,8 @@ function startGame() {
         document.getElementById('gameArea').style.display = 'block';
         
         nextRound();
-    }
 }
+
 
 function nextRound() {
     if (wordBank.length === 0) {
