@@ -99,7 +99,7 @@ function addWord() {
     if (!word) return;
 
     if (!isValidWord(word)) {
-        alert("Only letters and numbers are allowed. No special characters.");
+        alert("Only letters are allowed. No special characters.");
         return;
     }
 
